@@ -1,5 +1,9 @@
 version: "3.8"
 
+networks:
+  my_net:
+    driver: bridge
+
 services:
   appserver:
     container_name: appserver
@@ -7,6 +11,11 @@ services:
       context: ./app
     ports:
       - "3000:3000"
+    networks:
+      - my_net
+    depends_on:
+      - db
+
   nginx:
     container_name: nginxproxy
     restart: always
@@ -14,3 +23,22 @@ services:
       context: ./nginx
     ports:
       - "80:80"
+    networks:
+      - my_net
+  
+  db:
+    container_name: db
+    platform: linux/x86_64
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    # restart: always
+    environment:
+      MYSQL_DATABASE: 'appdb'
+      MYSQL_ROOT_PASSWORD: 'pedro'
+      # MYSQL_PASSWORD: 'pedro'
+    ports:
+      - '3306:3306'
+    volumes:
+      - .docker/data:/var/lib/mysql
+    networks:
+      - my_net
