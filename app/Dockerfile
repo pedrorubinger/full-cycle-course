@@ -1,5 +1,5 @@
 # pull the Node.js Docker image
-FROM node:alpine
+FROM node:16
 
 WORKDIR /usr/src/app
 
