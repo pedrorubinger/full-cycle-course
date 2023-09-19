@@ -11,8 +11,6 @@ COPY . .
 
 EXPOSE 3000
 
-# CMD ["node", "index.js"]
-
 RUN apt-get update && apt-get install -y wget
 
 ENV DOCKERIZE_VERSION v0.6.1
